@@ -1,0 +1,22 @@
+cmake_minimum_required(VERSION 3.12)
+
+project(SnakeGame)
+
+set(CMAKE_C_STANDARD 99)
+
+
+set(SDL3_DIR "${CMAKE_SOURCE_DIR}/SDL3")
+
+include_directories(${SDL3_DIR}/include)
+
+link_directories(${SDL3_DIR}/lib)
+
+add_executable(SnakeGame snake.c)
+
+target_link_libraries(SnakeGame SDL3)
+
+if(WIN32)
+    set(SDL3_DLL_PATH "${SDL3_DIR}/bin/SDL3.dll")
+    add_custom_command(TARGET SnakeGame POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${SDL3_DLL_PATH} $<TARGET_FILE_DIR:SnakeGame>)
+endif()
